@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status, Response, Depends, APIRouter
 from typing import List
 from sqlalchemy.orm import Session
-from .. import schemas, models
+from .. import schemas, models, oauth2
 from .. database import get_db
 
 router = APIRouter(
@@ -12,16 +12,17 @@ router = APIRouter(
 my_post = [{"title":"favorite food", "content":"I like Pizza", "id":2}]
 
 @router.get("/", response_model=List[schemas.PostResponse])
-def get_posts(db:Session = Depends(get_db)):
+def get_posts(db:Session = Depends(get_db), user_id : int = Depends(oauth2.get_current_user)):
     posts = db.query(models.Post).all()
     return posts
 
 @router.post("/", status_code= status.HTTP_201_CREATED, response_model=schemas.PostResponse)
-def create_post(post:schemas.CreatePost, db:Session = Depends(get_db)):
+def create_post(post:schemas.CreatePost, db:Session = Depends(get_db), user_id : int = Depends(oauth2.get_current_user)):
    new_post = models.Post(**post.dict())
    db.add(new_post)
    db.commit()
    db.refresh(new_post)
+   print(user_id)
    return new_post
 
 def find_post(id):
@@ -29,8 +30,8 @@ def find_post(id):
         if p['id'] == id:
             return p
 
-@router.get("/{id}", response_model= schemas.PostResponse) 
-def get_post(id:int, response:Response, db:Session = Depends(get_db)):
+@router.get("/{id}", response_model= schemas.PostResponse, ) 
+def get_post(id:int, response:Response, db:Session = Depends(get_db), user_id : int = Depends(oauth2.get_current_user)):
    post = db.query(models.Post).filter(models.Post.id == id).first()
 
    if not post:
@@ -43,7 +44,7 @@ def get_post(id:int, response:Response, db:Session = Depends(get_db)):
 
 
 @router.delete("/{id}",status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id:int, db:Session = Depends(get_db)):
+def delete_post(id:int, db:Session = Depends(get_db), user_id : int = Depends(oauth2.get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id)
 
     if post.first() == None:
@@ -57,7 +58,7 @@ def delete_post(id:int, db:Session = Depends(get_db)):
     return Response(status_code= status.HTTP_204_NO_CONTENT)
 
 @router.put("/{id}")
-def update_post(id:int, updated_post:schemas.CreatePost, db:Session = Depends(get_db)):
+def update_post(id:int, updated_post:schemas.CreatePost, db:Session = Depends(get_db), user_id : int = Depends(oauth2.get_current_user)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
     

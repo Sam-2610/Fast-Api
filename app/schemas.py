@@ -7,6 +7,8 @@ class PostBase(BaseModel):
     title:str
     content:str
     published:bool = True
+    
+    
 
 class CreatePost(PostBase):
     pass
@@ -18,6 +20,9 @@ class Usercreate(BaseModel):
 class PostResponse(PostBase):
     id:int
     created_at:datetime
+    user_id:int
+    
+    
 
     class Config:
         from_attributes = True
@@ -25,6 +30,7 @@ class PostResponse(PostBase):
 class Userout(BaseModel):
     id:int
     email:EmailStr
+    
 
     class Config:
         from_attributes = True

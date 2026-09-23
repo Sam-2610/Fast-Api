@@ -17,16 +17,6 @@ class Usercreate(BaseModel):
     email:EmailStr
     password:str
 
-class PostResponse(PostBase):
-    id:int
-    created_at:datetime
-    user_id:int
-    
-    
-
-    class Config:
-        from_attributes = True
-
 class Userout(BaseModel):
     id:int
     email:EmailStr
@@ -34,6 +24,20 @@ class Userout(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class PostResponse(PostBase):
+    id:int
+    created_at:datetime
+    user_id:int
+    user:Userout
+   
+    
+    
+
+    class Config:
+        from_attributes = True
+
 
 class Userlogin(BaseModel):
     email:EmailStr

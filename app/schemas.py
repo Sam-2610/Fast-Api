@@ -14,6 +14,14 @@ class PostBase(BaseModel):
 class CreatePost(PostBase):
     pass
 
+class PostOut(BaseModel):
+    Post:PostBase
+    votes:int
+
+    class Config:
+        from_attributes = True
+
+
 class Usercreate(BaseModel):
     email:EmailStr
     password:str

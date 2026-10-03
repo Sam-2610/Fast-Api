@@ -5,6 +5,7 @@ from typing import Optional, Annotated
 
 
 class PostBase(BaseModel):
+    
     title:str
     content:str
     published:bool = True
@@ -15,7 +16,7 @@ class CreatePost(PostBase):
     pass
 
 class PostOut(BaseModel):
-    Post:PostBase
+    Post:PostResponse
     votes:int
 
     class Config:

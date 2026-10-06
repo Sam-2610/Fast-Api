@@ -13,13 +13,13 @@ jobs:
           SECRET_KEY: ${{secrets.SECRET_KEY}}
           ALGORITHM: ${{secrets.ALGORITHM}}
           ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
-        
+
         services:
             postgres:
                 image: postgres
                 env:
                     POSTGRES_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
-                    POSTGRES_DB: ${{secrets.DATABASE_NAME}}_test
+                    POSTGRES_DB: ${{secrets.DATABASE_NAME}}
                 ports:
                   - 5432:5432
                 options: >-
@@ -27,8 +27,6 @@ jobs:
                     --health-interval 10s
                     --health-timeout 5s
                     --health-retries 5
-
-
 
         runs-on: ubuntu-latest
         steps:
@@ -42,7 +40,9 @@ jobs:
               run: python -m pip install --upgrade pip
             - name: Install all dependencies
               run: pip install -r requirements.txt
-            - name: test with pytest
+            - name: Create test database
               run: |
-                pip install pytest
-                pytest
+                sudo apt-get install -y postgresql-client
+                PGPASSWORD=${{ secrets.DATABASE_PASSWORD }} psql -h localhost -U ${{ secrets.DATABASE_USERNAME }} -c "CREATE DATABASE ${{ secrets.DATABASE_NAME }}_test;"
+            - name: test with pytest
+              run: pytest

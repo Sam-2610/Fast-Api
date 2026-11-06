@@ -1,74 +1,73 @@
-# Backend clone  of a social media app using FastAPI
+# Social Media API (FastAPI backend)
 
-#### This API  has 4 routes
+A backend API for a social media app, built with **FastAPI** and **PostgreSQL**. Users can sign up, log in with a JWT token, create and manage posts, and vote (like) on posts. Interactive API docs are generated automatically at `/docs`.
 
-## 1) Post route
+## Tech stack
+- **Language:** Python
+- **Framework:** FastAPI, served with Uvicorn
+- **Database:** PostgreSQL (psycopg2), SQLAlchemy ORM, Alembic migrations
+- **Authentication:** JWT access tokens (python-jose), password hashing with bcrypt (passlib)
+- **Validation and settings:** Pydantic, pydantic-settings (reads the `.env` file)
+- **Testing:** pytest
 
-#### This route is responsible for creating posts, deleting posts, updating posts, and checking posts
+## API routes
+| Route group | What it does |
+|---|---|
+| **Posts** | Create, read, update and delete posts |
+| **Users** | Create a user and look up a user by ID |
+| **Auth** | Log in and receive a JWT access token |
+| **Vote** | Like a post and remove your like |
 
-## 2) Users route
+Open `/docs` after starting the server to see every endpoint and try it out. Use the **Authorize** button there to log in and test the protected routes.
 
-#### This route is about creating users and searching users by ID
+## How to run locally
 
-## 3) Auth route
+**1. Clone the repo and create a virtual environment**
+```bash
+git clone https://github.com/Sam-2610/<your-repo-name>.git
+cd <your-repo-name>
+python -m venv venv
+venv\Scripts\activate            # Windows (Mac/Linux: source venv/bin/activate)
+pip install -r requirements.txt
+```
 
-#### This route is about the login system
+**2. Create a PostgreSQL database**
+Create an empty database (for example with pgAdmin or `createdb`) and remember its name, user and password.
 
-## 4) Vote route
+**3. Create a `.env` file** in the project folder:
+```
+DATABASE_HOSTNAME=localhost
+DATABASE_PORT=5432
+DATABASE_PASSWORD=your_database_password
+DATABASE_NAME=your_database_name
+DATABASE_USERNAME=your_database_user
+SECRET_KEY=your-secret-key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+```
+Generate your own `SECRET_KEY` with:
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+Never commit your real `.env` file. It is listed in `.gitignore`.
 
- #### This route handles the likes/vote system and includes code for upvoting or downvoting. There is no logic for downvoting
+**4. Create the tables** (skip this if your app creates them on startup)
+```bash
+alembic upgrade head
+```
 
-# How to run locally
-First, clone this repo using the following command
-````
+**5. Start the server**
+```bash
+uvicorn app.main:app --reload
+```
+If your `main.py` is in the project root and not in an `app` folder, use `uvicorn main:app --reload` instead.
 
-git clone https://github.com/Sanjeev-Thiyagarajan/fastapi-course.git
+**6. Open the docs:** http://127.0.0.1:8000/docs
 
-````
-then 
-````
+## Tests
+```bash
+pytest
+```
 
-cd fastapi-course
-
-````
-
-Then install FastAPI using the all flag like 
-
-````
-
-pip install fastapi[all]
-
-````
-
-Then go to this repo folder on your local computer and run the following command
-````
-
-uvicorn main: app --reload
-
-````
-
-Then you can use the following link to use the  API
-
-````
-
-http://127.0.0.1:8000/docs 
-
-````
-
-## After running this API, you need a database in Postgres 
-Create a database in Postgres, then create a file named .env and write the following things in your files and o
-
-````
-DATABASE_HOSTNAME = localhost
-DATABASE_PORT = 5432
-DATABASE_PASSWORD = passward_that_you_set
-DATABASE_NAME = name_of_database
-DATABASE_USERNAME = User_name
-SECRET_KEY = 09d25e094faa2556c818166b7a99f6f0f4c3b88e8d3e7 
-ALGORITHM = HS256
-ACCESS_TOKEN_EXPIRE_MINUTES = 60(base)
-
-````
-### Note: SECRET_KEY in this example is just a pseudo key. You need to get a key for yourself, and you can get the SECRET_KEY  from FastAPI documentation
- 
-
+## Credits
+Based on the FastAPI course by Sanjeev Thiyagarajan.

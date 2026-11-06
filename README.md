@@ -55,8 +55,8 @@ http://127.0.0.1:8000/docs
 
 ````
 
-## After run this API you need a database in postgres 
-Create a database in postgres then create a file name .env and write the following things in you file 
+## After running this API, you need a database in Postgres 
+Create a database in Postgres, then create a file named .env and write the following things in your file 
 
 ````
 DATABASE_HOSTNAME = localhost
@@ -69,6 +69,6 @@ ALGORITHM = HS256
 ACCESS_TOKEN_EXPIRE_MINUTES = 60(base)
 
 ````
-### Note: SECRET_KEY in this exmple is just a psudo key. You need to get a key for youself and you can get the SECRET_KEY  from fastapi documantion
+### Note: SECRET_KEY in this example is just a pseudo key. You need to get a key for yourself, and you can get the SECRET_KEY  from FastAPI documentation
  
 

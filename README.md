@@ -56,7 +56,7 @@ http://127.0.0.1:8000/docs
 ````
 
 ## After running this API, you need a database in Postgres 
-Create a database in Postgres, then create a file named .env and write the following things in your file 
+Create a database in Postgres, then create a file named .env and write the following things in your files and o
 
 ````
 DATABASE_HOSTNAME = localhost

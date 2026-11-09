@@ -13,7 +13,7 @@ A backend API for a social media app, built with **FastAPI** and **PostgreSQL**.
 ## API routes
 | Route group | What it does |
 |---|---|
-| **Posts** | Create, read, update and delete posts |
+| **Posts** | Create, read, update, and delete posts |
 | **Users** | Create a user and look up a user by ID |
 | **Auth** | Log in and receive a JWT access token |
 | **Vote** | Like a post and remove your like |
@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ```
 
 **2. Create a PostgreSQL database**
-Create an empty database (for example with pgAdmin or `createdb`) and remember its name, user and password.
+Create an empty database (for example, with pgAdmin or `createdb`) and remember its name, user and password.
 
 **3. Create a `.env` file** in the project folder:
 ```
@@ -58,9 +58,9 @@ alembic upgrade head
 
 **5. Start the server**
 ```bash
-uvicorn app.main:app --reload
+uvicorn app. main: app --reload
 ```
-If your `main.py` is in the project root and not in an `app` folder, use `uvicorn main:app --reload` instead.
+If your `main.py` is in the project root and not in an `app` folder, use `uvicorn main: app --reload` instead.
 
 **6. Open the docs:** http://127.0.0.1:8000/docs
 
